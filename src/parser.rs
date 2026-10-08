@@ -1185,6 +1185,12 @@ impl<'run, 'src> Parser<'run, 'src> {
 
             let codepoint = u32::from_str_radix(hex, 16).unwrap();
 
+            if (0xD800..=0xDFFF).contains(&codepoint) {
+              return Err(
+                token.error(CompileErrorKind::UnicodeEscapeSurrogate { hex: hex.clone() }),
+              );
+            }
+
             cooked.push(char::from_u32(codepoint).ok_or_else(|| {
               token.error(CompileErrorKind::UnicodeEscapeRange { hex: hex.clone() })
             })?);

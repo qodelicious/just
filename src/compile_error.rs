@@ -452,6 +452,10 @@ impl Display for CompileError<'_> {
           "unicode escape sequence value `{hex}` greater than maximum valid code point `10FFFF`",
         )
       }
+      UnicodeEscapeSurrogate { hex } => write!(
+        f,
+        "unicode escape sequence value `{hex}` is a surrogate, which is not a valid code point",
+      ),
       UnicodeEscapeUnterminated => write!(f, "unterminated unicode escape sequence"),
       UnknownAliasTarget { alias, target } => {
         write!(f, "alias `{alias}` has an unknown target `{target}`")

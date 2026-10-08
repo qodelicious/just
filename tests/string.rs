@@ -654,6 +654,23 @@ fn unicode_escape_invalid_character() {
 }
 
 #[test]
+fn unicode_escape_surrogate() {
+  Test::new()
+    .justfile("x := \"\\u{D800}\"")
+    .args(["--evaluate", "x"])
+    .stderr(
+      r#"
+        error: unicode escape sequence value `D800` is a surrogate, which is not a valid code point
+         ——▶ justfile:1:6
+          │
+        1 │ x := "\u{D800}"
+          │      ^^^^^^^^^^
+      "#,
+    )
+    .failure();
+}
+
+#[test]
 fn unicode_escape_too_long() {
   Test::new()
     .justfile("x := \"\\u{FFFFFFFFFF}\"")

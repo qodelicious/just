@@ -253,6 +253,9 @@ pub(crate) enum CompileErrorKind<'src> {
   UnicodeEscapeRange {
     hex: String,
   },
+  UnicodeEscapeSurrogate {
+    hex: String,
+  },
   UnicodeEscapeUnterminated,
   UnknownAliasTarget {
     alias: &'src str,
